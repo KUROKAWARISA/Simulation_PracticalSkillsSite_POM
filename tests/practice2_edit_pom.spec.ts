@@ -47,7 +47,7 @@ test.fixme('Q3: 書籍ID=1のメモが「初心者におすすめ」である', 
 test.fixme('Q4: 書籍ID=2の評価が「5」である', async ({ page }) => {
   // TODO: BookPage.getBookRating() を実装してから使用
   // Act: getBookRating(2)
-  // Assert: '5' を含むことを検証
+  // Assert: 評価は数字ではなく星マークで表示される。'★★★★★' であることを検証
 });
 
 // Q5: 書籍のページ数を取得できる
