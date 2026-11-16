@@ -84,6 +84,7 @@ test('Q7: 著者・メモを入力して書籍を追加できる', async ({ page
   // Arrange: addBookButton 
   await bookPage.addBookButton.click();
   // Act: タイトル、ジャンル、著者、メモを入力して保存
+<<<<<<< HEAD
   await bookModal.fillTitle('新しい書籍');
   await bookModal.selectGenre('tech');
   await bookModal.selectAuthor('山田');
@@ -92,6 +93,9 @@ test('Q7: 著者・メモを入力して書籍を追加できる', async ({ page
   const bookCount = await bookPage.getBookCount();
   // Assert: 書籍数が7件になることを検証
   expect(bookCount).toBe(7);
+=======
+  // Assert: 書籍数が7件になり、追加された書籍の著者とメモが一覧に表示されることを検証
+>>>>>>> upstream/main
 });
 
 // Q8: 評価・ページ数を設定して書籍を追加できる
@@ -100,6 +104,7 @@ test('Q8: 評価・ページ数を設定して書籍を追加できる', async (
   // Arrange: addBookButton をクリック
   await bookPage.addBookButton.click();
   // Act: タイトル、評価、ページ数を入力して保存
+<<<<<<< HEAD
   await bookModal.fillTitle('新しい書籍');
   await bookModal.selectRating(5);
   await bookModal.fillPages('400');
@@ -107,6 +112,9 @@ test('Q8: 評価・ページ数を設定して書籍を追加できる', async (
   const bookCount = await bookPage.getBookCount();
   // Assert: 書籍数が7件になることを検証
   expect(bookCount).toBe(7);
+=======
+  // Assert: 書籍数が7件になり、追加された書籍の評価とページ数が一覧に表示されることを検証
+>>>>>>> upstream/main
 });
 
 // Q9: ウィッシュリスト保存するとステータスが「未読」になる
@@ -163,6 +171,7 @@ test('Q13: 著者・評価・ページ数を全て設定して追加できる', 
   // Arrange: addBookButton をクリック
   await bookPage.addBookButton.click();
   // Act: タイトル、著者、評価、ページ数を入力して保存
+<<<<<<< HEAD
   await bookModal.fillTitle('新しい書籍');
   await bookModal.selectAuthor('山田');
   await bookModal.selectRating(4);
@@ -171,6 +180,9 @@ test('Q13: 著者・評価・ページ数を全て設定して追加できる', 
   const bookCount = await bookPage.getBookCount();
   // Assert: 書籍数が7件になることを検証
   expect(bookCount).toBe(7);
+=======
+  // Assert: 書籍数が7件になり、追加された書籍の著者・評価・ページ数が一覧に表示されることを検証
+>>>>>>> upstream/main
 });
 
 // Q14: 書籍名を空のまま保存するとエラーが表示される（提供済みメソッドで動作確認用）
