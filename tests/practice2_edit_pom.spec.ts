@@ -67,7 +67,7 @@ test.fixme('Q7: 著者・メモを入力して書籍を追加できる', async (
   // TODO: BookModal.selectAuthor() と BookModal.fillNote() を実装してから使用
   // Arrange: addBookButton をクリック
   // Act: タイトル、ジャンル、著者、メモを入力して保存
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の著者とメモが一覧に表示されることを検証
 });
 
 // Q8: 評価・ページ数を設定して書籍を追加できる
@@ -75,7 +75,7 @@ test.fixme('Q8: 評価・ページ数を設定して書籍を追加できる', a
   // TODO: BookModal.selectRating() と BookModal.fillPages() を実装してから使用
   // Arrange: addBookButton をクリック
   // Act: タイトル、評価、ページ数を入力して保存
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の評価とページ数が一覧に表示されることを検証
 });
 
 // Q9: ウィッシュリスト保存するとステータスが「未読」になる
@@ -113,7 +113,7 @@ test.fixme('Q13: 著者・評価・ページ数を全て設定して追加でき
   // TODO: BookModal の selectAuthor, selectRating, fillPages を全て実装してから使用
   // Arrange: addBookButton をクリック
   // Act: タイトル、著者、評価、ページ数を入力して保存
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の著者・評価・ページ数が一覧に表示されることを検証
 });
 
 // Q14: 書籍名を空のまま保存するとエラーが表示される（提供済みメソッドで動作確認用）
