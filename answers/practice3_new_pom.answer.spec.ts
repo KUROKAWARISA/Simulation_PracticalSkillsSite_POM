@@ -34,11 +34,11 @@ test('Q2: デフォルトでコンパクト表示・表紙表示・評価表示�
   // Act
   await displayPage.navigate();
   // Assert
-  expect(await displayPage.isCompactChecked()).toBe(true);
-  expect(await displayPage.isCoverChecked()).toBe(true);
-  expect(await displayPage.isRatingChecked()).toBe(true);
-  expect(await displayPage.isDarkmodeChecked()).toBe(false);
-  expect(await displayPage.isAnimationChecked()).toBe(false);
+  await expect(displayPage.compactToggle).toBeChecked();
+  await expect(displayPage.coverToggle).toBeChecked();
+  await expect(displayPage.ratingToggle).toBeChecked();
+  await expect(displayPage.darkmodeToggle).not.toBeChecked();
+  await expect(displayPage.animationToggle).not.toBeChecked();
 });
 
 // Q3: ダークモードトグルをONにして保存できる
@@ -46,7 +46,7 @@ test('Q3: ダークモードトグルをONにして保存できる', async ({ pa
   // Arrange
   await displayPage.navigate();
   // Act
-  await displayPage.toggleDarkmode();
+  await displayPage.setDarkmode(true);
   await displayPage.save();
   // Assert
   await expect(page.getByText('表示設定を保存しました')).toBeVisible();
@@ -56,28 +56,28 @@ test('Q3: ダークモードトグルをONにして保存できる', async ({ pa
 test('Q4: リセットするとトグルが初期状態に戻る', async ({ page }) => {
   // Arrange
   await displayPage.navigate();
-  await displayPage.toggleDarkmode();
+  await displayPage.setDarkmode(true);
   await displayPage.save();
   // Act
   await displayPage.reset();
   // Assert
-  expect(await displayPage.isDarkmodeChecked()).toBe(false);
-  expect(await displayPage.isCompactChecked()).toBe(true);
-  expect(await displayPage.isCoverChecked()).toBe(true);
-  expect(await displayPage.isRatingChecked()).toBe(true);
+  await expect(displayPage.darkmodeToggle).not.toBeChecked();
+  await expect(displayPage.compactToggle).toBeChecked();
+  await expect(displayPage.coverToggle).toBeChecked();
+  await expect(displayPage.ratingToggle).toBeChecked();
 });
 
 // Q5: 保存した設定がページ遷移後も保持される
 test('Q5: 保存した設定がページ遷移後も保持される', async ({ page }) => {
   // Arrange
   await displayPage.navigate();
-  await displayPage.toggleDarkmode();
+  await displayPage.setDarkmode(true);
   await displayPage.save();
   // Act: 別のページに遷移して戻る
   await page.getByTestId('nav-books').click();
   await displayPage.navigate();
   // Assert
-  expect(await displayPage.isDarkmodeChecked()).toBe(true);
+  await expect(displayPage.darkmodeToggle).toBeChecked();
 });
 
 // Q6: アニメーショントグルをONにして保存できる
@@ -85,7 +85,7 @@ test('Q6: アニメーショントグルをONにして保存できる', async ({
   // Arrange
   await displayPage.navigate();
   // Act
-  await displayPage.toggleAnimation();
+  await displayPage.setAnimation(true);
   await displayPage.save();
   // Assert
   await expect(page.getByText('表示設定を保存しました')).toBeVisible();
@@ -95,18 +95,18 @@ test('Q6: アニメーショントグルをONにして保存できる', async ({
 test('Q7: 全トグルをONにしてリセットすると初期値に戻る', async ({ page }) => {
   // Arrange
   await displayPage.navigate();
-  await displayPage.toggleDarkmode();    // OFF → ON
-  await displayPage.toggleAnimation();   // OFF → ON
-  // compact, cover, rating are already ON
+  await displayPage.setDarkmode(true);
+  await displayPage.setAnimation(true);
+  // compact / cover / rating は既定で ON
   await displayPage.save();
   // Act
   await displayPage.reset();
   // Assert
-  expect(await displayPage.isDarkmodeChecked()).toBe(false);
-  expect(await displayPage.isCompactChecked()).toBe(true);
-  expect(await displayPage.isCoverChecked()).toBe(true);
-  expect(await displayPage.isRatingChecked()).toBe(true);
-  expect(await displayPage.isAnimationChecked()).toBe(false);
+  await expect(displayPage.darkmodeToggle).not.toBeChecked();
+  await expect(displayPage.compactToggle).toBeChecked();
+  await expect(displayPage.coverToggle).toBeChecked();
+  await expect(displayPage.ratingToggle).toBeChecked();
+  await expect(displayPage.animationToggle).not.toBeChecked();
 });
 
 // Q8: コンパクト表示をOFFにして保存できる
@@ -114,11 +114,11 @@ test('Q8: コンパクト表示をOFFにして保存できる', async ({ page })
   // Arrange
   await displayPage.navigate();
   // Act
-  await displayPage.toggleCompact();  // ON → OFF
+  await displayPage.setCompact(false);
   await displayPage.save();
   // Assert
   await expect(page.getByText('表示設定を保存しました')).toBeVisible();
-  expect(await displayPage.isCompactChecked()).toBe(false);
+  await expect(displayPage.compactToggle).not.toBeChecked();
 });
 
 // ========================
