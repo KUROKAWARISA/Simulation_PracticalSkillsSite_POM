@@ -2,6 +2,11 @@ import { Page, Locator } from '@playwright/test';
 
 export class DisplayPage {
   readonly page: Page;
+
+  // トグルの input は CSS で隠れていて visible=false なので、直接は押せない。
+  // 囲っている <label> を掴んで setChecked(true/false) で操作する。
+  // evaluate(el => el.click()) でも動くが、Playwright のチェックを全部飛ばすため
+  // 「押せないはずのときも押せてしまう」。テストとしては使わない。
   readonly darkmodeToggle: Locator;
   readonly compactToggle: Locator;
   readonly coverToggle: Locator;
@@ -12,11 +17,11 @@ export class DisplayPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.darkmodeToggle  = page.getByTestId('display-darkmode');
-    this.compactToggle   = page.getByTestId('display-compact');
-    this.coverToggle     = page.getByTestId('display-cover');
-    this.ratingToggle    = page.getByTestId('display-rating');
-    this.animationToggle = page.getByTestId('display-animation');
+    this.darkmodeToggle  = page.locator('label:has([data-testid="display-darkmode"])');
+    this.compactToggle   = page.locator('label:has([data-testid="display-compact"])');
+    this.coverToggle     = page.locator('label:has([data-testid="display-cover"])');
+    this.ratingToggle    = page.locator('label:has([data-testid="display-rating"])');
+    this.animationToggle = page.locator('label:has([data-testid="display-animation"])');
     this.saveButton      = page.getByTestId('save-display-btn');
     this.resetButton     = page.getByTestId('reset-display-btn');
   }
@@ -25,24 +30,25 @@ export class DisplayPage {
     await this.page.getByTestId('nav-display').click();
   }
 
-  async toggleDarkmode() {
-    await this.darkmodeToggle.evaluate((el) => (el as HTMLInputElement).click());
+  // toggle（反転）ではなく setChecked（状態を指定）にすると、実行順に依存しなくなる。
+  async setDarkmode(on: boolean) {
+    await this.darkmodeToggle.setChecked(on);
   }
 
-  async toggleCompact() {
-    await this.compactToggle.evaluate((el) => (el as HTMLInputElement).click());
+  async setCompact(on: boolean) {
+    await this.compactToggle.setChecked(on);
   }
 
-  async toggleCover() {
-    await this.coverToggle.evaluate((el) => (el as HTMLInputElement).click());
+  async setCover(on: boolean) {
+    await this.coverToggle.setChecked(on);
   }
 
-  async toggleRating() {
-    await this.ratingToggle.evaluate((el) => (el as HTMLInputElement).click());
+  async setRating(on: boolean) {
+    await this.ratingToggle.setChecked(on);
   }
 
-  async toggleAnimation() {
-    await this.animationToggle.evaluate((el) => (el as HTMLInputElement).click());
+  async setAnimation(on: boolean) {
+    await this.animationToggle.setChecked(on);
   }
 
   async save() {
@@ -51,25 +57,5 @@ export class DisplayPage {
 
   async reset() {
     await this.resetButton.click();
-  }
-
-  async isDarkmodeChecked(): Promise<boolean> {
-    return await this.darkmodeToggle.isChecked();
-  }
-
-  async isCompactChecked(): Promise<boolean> {
-    return await this.compactToggle.isChecked();
-  }
-
-  async isCoverChecked(): Promise<boolean> {
-    return await this.coverToggle.isChecked();
-  }
-
-  async isRatingChecked(): Promise<boolean> {
-    return await this.ratingToggle.isChecked();
-  }
-
-  async isAnimationChecked(): Promise<boolean> {
-    return await this.animationToggle.isChecked();
   }
 }
