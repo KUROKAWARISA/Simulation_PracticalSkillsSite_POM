@@ -87,6 +87,7 @@ test('Q3: ダークモードトグルをONにして保存できる', async ({ pa
   await displayPage.saveSettings();
   // Assert: トースト "表示設定を保存しました" が表示される
   await expect(displayPage.toastMessage).toBeVisible();
+  await expect(displayPage.darkModeToggle).toBeChecked();
 });
 
 // Q4: リセットするとトグルが初期状態に戻る
@@ -110,12 +111,13 @@ test('Q4: リセットするとトグルが初期状態に戻る', async ({ page
 test('Q5: 保存した設定がページ遷移後も保持される', async ({ page }) => {
   // TODO: DisplayPage POM を作成して使用
   const displayPage = new DisplayPage(page);
+  const emailPage = new EmailPage(page);
   // Arrange: navigate() → darkmode をON → save()
   await displayPage.navigate();
   await displayPage.setDarkMode(true);
   await displayPage.saveSettings();
   // Act: 別ページに遷移 → 再度 navigate()
-  await page.getByTestId('nav-email').click();
+  await emailPage.navigate();
   await displayPage.navigate();
   // Assert: darkmode が ON のままであることを検証
   await expect(displayPage.darkModeToggle).toBeChecked();
@@ -224,7 +226,7 @@ test('Q13: メールアドレスが一致しないとエラーが表示される
   const emailPage = new EmailPage(page);
   // Act: 異なるメールアドレスを入力して save()
   await emailPage.navigate();
-  await emailPage.fillEmailForm('new-admin@example.com', 'different@example.com', 'admin123');
+  await emailPage.fillEmailForm('new-admin@example.com', 'different@example.com', 'password');
   await emailPage.submitEmailChange();
   // Assert: #email-confirm-error "メールアドレスが一致しません" が表示される
   await expect(emailPage.confirmEmailError).toBeVisible();
@@ -237,7 +239,7 @@ test('Q14: 不正なメールアドレス形式だとエラーが表示される
   const emailPage = new EmailPage(page);
   // Act: "invalid-email" を入力して save()
   await emailPage.navigate();
-  await emailPage.fillEmailForm('invalid-email', 'invalid-email', 'admin123');
+  await emailPage.fillEmailForm('invalid-email', 'invalid-email', 'password');
   await emailPage.submitEmailChange();
   // Assert: #email-new-error "正しいメールアドレスを入力してください" が表示される
   await expect(emailPage.newEmailError).toBeVisible();
@@ -250,7 +252,7 @@ test('Q15: キャンセルボタンを押すと入力内容がクリアされる
   const emailPage = new EmailPage(page);
   // Arrange: navigate() → フィールドに値を入力
   await emailPage.navigate();
-  await emailPage.fillEmailForm('new-admin@example.com', 'new-admin@example.com', 'admin123');
+  await emailPage.fillEmailForm('new-admin@example.com', 'new-admin@example.com', 'password');
   // Act: cancel()
   await emailPage.cancelEmailChange();
   // Assert: 全フィールドが空になっていることを検証
